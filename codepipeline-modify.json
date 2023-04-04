@@ -1,0 +1,99 @@
+{
+    "pipeline": {
+        "name": "ecs-test-bluegreen-pipeline",
+        "roleArn": "arn:aws:iam::<account-number>:role/service-role/AWSCodePipelineServiceRole-ap-northeast-2-ecs-test-bluegreen-pi",
+        "artifactStore": {
+            "type": "S3",
+            "location": "<artifact-s3>"
+        },
+        "stages": [
+            {
+                "name": "Source",
+                "actions": [
+                    {
+                        "name": "Source",
+                        "actionTypeId": {
+                            "category": "Source",
+                            "owner": "AWS",
+                            "provider": "ECR",
+                            "version": "1"
+                        },
+                        "runOrder": 1,
+                        "configuration": {
+                            "ImageTag": "<tag-name>",
+                            "RepositoryName": "my-pipeline"
+                        },
+                        "outputArtifacts": [
+                            {
+                                "name": "ecs-bluegreen-test"
+                            }
+                        ],
+                        "inputArtifacts": [],
+                        "region": "ap-northeast-2",
+                        "namespace": "SourceVariables"
+                    },
+                    {
+                        "name": "deploy-config-repo",
+                        "actionTypeId": {
+                            "category": "Source",
+                            "owner": "AWS",
+                            "provider": "CodeCommit",
+                            "version": "1"
+                        },
+                        "runOrder": 1,
+                        "configuration": {
+                            "BranchName": "main",
+                            "OutputArtifactFormat": "CODE_ZIP",
+                            "PollForSourceChanges": "false",
+                            "RepositoryName": "bluegreen-config"
+                        },
+                        "outputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
+                        "inputArtifacts": [],
+                        "region": "ap-northeast-2"
+                    }
+                ]
+            },
+            {
+                "name": "Deploy",
+                "actions": [
+                    {
+                        "name": "Deploy",
+                        "actionTypeId": {
+                            "category": "Deploy",
+                            "owner": "AWS",
+                            "provider": "CodeDeployToECS",
+                            "version": "1"
+                        },
+                        "runOrder": 1,
+                        "configuration": {
+                            "AppSpecTemplateArtifact": "SourceArtifact",
+                            "AppSpecTemplatePath": "appspec.yaml",
+                            "ApplicationName": "AppECS-ecs-test-svc-ecs-bluegreen",
+                            "DeploymentGroupName": "DgpECS-ecs-test-svc-ecs-bluegreen",
+                            "TaskDefinitionTemplateArtifact": "SourceArtifact",
+                            "TaskDefinitionTemplatePath": "taskdef.json"
+                        },
+                        "outputArtifacts": [],
+                        "inputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
+                        "region": "ap-northeast-2",
+                        "namespace": "DeployVariables"
+                    }
+                ]
+            }
+        ],
+        "version": 8
+    },
+    "metadata": {
+        "pipelineArn": "arn:aws:codepipeline:ap-northeast-2:514675637779:ecs-test-bluegreen-pipeline",
+        "created": "2023-03-31T09:40:16.839000+09:00",
+        "updated": "2023-03-31T11:10:47.494000+09:00"
+    }
+}

@@ -4,7 +4,7 @@
   "detail": {
     "action-type": ["PUSH"],
     "result": ["SUCCESS"],
-    "repository-name": ["my-pipeline"]
+    "repository-name": ["my-pipeline"],
 	"image-tag": ["<tag-name>"]
   }
 }

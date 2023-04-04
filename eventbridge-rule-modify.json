@@ -3,5 +3,5 @@
     "EventPattern": "{\"source\":[\"aws.ecr\"],\"detail-type\":[\"ECR Image Action\"],\"detail\":{\"action-type\":[\"PUSH\"],\"result\":[\"SUCCESS\"],\"repository-name\":[\"my-pipeline\"],\"image-tag\":[\"<tag-name>\"]}}",
     "State": "ENABLED",
     "Description": "ecr-push-trigger-pipeline",
-    "EventBusName": "default",
+    "EventBusName": "default"
 }

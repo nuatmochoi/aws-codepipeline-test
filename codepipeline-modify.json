@@ -74,6 +74,8 @@
                             "AppSpecTemplatePath": "appspec.yaml",
                             "ApplicationName": "AppECS-ecs-test-svc-ecs-bluegreen",
                             "DeploymentGroupName": "DgpECS-ecs-test-svc-ecs-bluegreen",
+                            "Image1ArtifactName" : "ecs-bluegreen-test",
+                            "Image1ContainerName" : "IMAGE1_NAME",
                             "TaskDefinitionTemplateArtifact": "SourceArtifact",
                             "TaskDefinitionTemplatePath": "taskdef.json"
                         },
@@ -81,6 +83,9 @@
                         "inputArtifacts": [
                             {
                                 "name": "SourceArtifact"
+                            },
+                            {
+                                "name": "ecs-bluegreen-test"
                             }
                         ],
                         "region": "ap-northeast-2",
